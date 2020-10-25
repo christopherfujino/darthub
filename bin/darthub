@@ -15,4 +15,9 @@ function follow_links() (
 PROG_NAME="$(follow_links "${BASH_SOURCE[0]}")"
 BIN_DIR="$(cd "${PROG_NAME%/*}" ; pwd -P)"
 
-dart --enable-experiment=non-nullable "$BIN_DIR/darthub.dart"
+if [ -z "$DARTHUB_ACCESS_TOKEN" ]; then
+  1>&2 echo 'Please provide the access token as DARTHUB_ACCESS_TOKEN.'
+  exit 1
+fi
+
+dart "$BIN_DIR/darthub.dart" "$@"
